@@ -13,27 +13,34 @@ let rollingBuffer: any[] = [];
 export let snapshot: any[] = [];
 
 let lastFlush = Date.now();
-ws.on("open", () => {
-  console.log("BAckend ws connected");
-});
-ws.on("message", (data) => {
-  const msg = JSON.parse(data.toString());
-  rollingBuffer.push(msg);
-  if (rollingBuffer.length > MAX_HISTORY) {
-    rollingBuffer.shift();
-  }
+function connect() {
+  console.log("connecting to ws server... ");
+  ws.on("open", () => {
+    console.log(`ws server connected at ${url}`);
+  });
+  ws.on("message", (data) => {
+    const msg = JSON.parse(data.toString());
+    rollingBuffer.push(msg);
+    if (rollingBuffer.length > MAX_HISTORY) {
+      rollingBuffer.shift();
+    }
 
-  const now = Date.now();
+    const now = Date.now();
 
-  if (rollingBuffer.length === MAX_HISTORY && now - lastFlush >= THROTTLE_MS) {
-    snapshot = [...rollingBuffer];
-    lastFlush = now;
-    // console.log("snapshot dynamic", snapshot);
-  }
-});
+    if (
+      rollingBuffer.length === MAX_HISTORY &&
+      now - lastFlush >= THROTTLE_MS
+    ) {
+      snapshot = [...rollingBuffer];
+      lastFlush = now;
+      // console.log("snapshot dynamic", snapshot);
+    }
+  });
 
-ws.on("close", () => {
-  console.log("Disconnected, retrying...");
-});
+  ws.on("close", () => {
+    console.log("Disconnected, retrying...");
+  });
 
-ws.on("error", console.error);
+  ws.on("error", console.error);
+}
+connect();

@@ -8,26 +8,27 @@ if (!url) {
 const ws = new WebSocket(url);
 const MAX_HISTORY = 3;
 export let latestWSMessages: any[] = [];
+function connect() {
+  console.log("connecting to ws server...");
+  ws.on("open", () => {
+    console.log(`ws server connected at ${url}`);
+  });
+  ws.on("message", (data) => {
+    const msg = JSON.parse(data.toString());
+    latestWSMessages.push(msg);
 
-ws.on("open", () => {
-  console.log("BAckend ws connected");
-});
-ws.on("message", (data) => {
-  const msg = JSON.parse(data.toString());
-  latestWSMessages.push(msg);
+    if (latestWSMessages.length > MAX_HISTORY) {
+      latestWSMessages.shift();
+    }
+  });
 
-  // keep only last MAX_HISTORY
-  if (latestWSMessages.length > MAX_HISTORY) {
-    latestWSMessages.shift();
-  }
-});
+  ws.on("close", () => {
+    console.log("Disconnected, retrying...");
+  });
 
-ws.on("close", () => {
-  console.log("Disconnected, retrying...");
-});
-
-ws.on("error", console.error);
-
+  ws.on("error", console.error);
+}
+connect();
 // export const setLatestWSMessage = (msg: any) => {
 //   latestWSMessage = msg;
 //   //   console.log("lastestWSMEssage", latestWSMessage);
