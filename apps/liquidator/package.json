@@ -1,0 +1,37 @@
+{
+  "name": "liquidator",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "nodemon --exec node --loader ts-node/esm src/index.ts"
+  },
+  "dependencies": {
+    "@types/ws": "^8.18.1",
+    "dotenv": "^17.2.3",
+    "ws": "^8.19.0",
+    "@prisma/client": "^6.19.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.5",
+    "init": "^0.1.2",
+    "install": "^0.13.0",
+    "nodemon": "^3.1.11",
+    "npm": "^11.7.0",
+    "npx": "^10.2.2",
+    "prisma": "^6.19.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

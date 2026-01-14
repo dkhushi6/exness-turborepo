@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+    output = "./../generated/prisma"
+    
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+    schemas  = ["app"]
+
+}
+
+model user{
+  id String @id @default(uuid())
+  name String
+  email String @unique
+  image String
+ emailVerified  DateTime? 
+ account account[]
+ session session[]
+  balance order[]
+ usd Decimal @default(5000)
+  @@schema("app")
+
+ 
+}
+model account {
+  id                String  @id @default(uuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user user @relation(fields: [userId], references: [id])
+  @@unique([provider, providerAccountId])
+    @@schema("app")
+
+}
+
+model session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user user @relation(fields: [userId], references: [id])
+    @@schema("app")
+
+}
+enum OrderType {
+  BUY
+  SELL
+    @@schema("app")
+
+}
+model order {
+  id           String   @id @default(uuid())
+  userId String
+  user user @relation(fields: [userId], references: [id])
+  type OrderType
+  asset String
+  quantity Decimal
+  leverage Decimal
+  openPrice Decimal
+  takeProfit Decimal
+  stopLoss Decimal
+createdAt DateTime @default(now())
+isClosed Boolean @default(false)
+closedAt DateTime?
+closePrice Decimal?
+pnl Decimal?
+  @@schema("app")
+}

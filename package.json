@@ -1,5 +1,5 @@
 {
-  "name": "my-turborepo",
+  "name": "exness-turborepo",
   "private": true,
   "scripts": {
     "build": "turbo run build",
@@ -12,6 +12,9 @@
     "prettier": "^3.7.4",
     "turbo": "^2.7.4",
     "typescript": "5.9.2"
+  },
+  "dependencies": {
+    "@repo/db": "workspace:*"
   },
   "engines": {
     "node": ">=18"

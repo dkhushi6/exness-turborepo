@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+
+    "target": "ES2022",
+    "declaration": true,
+    "emitDeclarationOnly": false,
+
+    "verbatimModuleSyntax": true
+  },
+  "include": ["src"],
+  "exclude": ["dist", "node_modules"]
+}
