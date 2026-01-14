@@ -1,15 +1,14 @@
 "use client";
-import React, { use, useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import React, { useEffect, useState } from "react";
 import { Card } from "../ui/card";
-import axios from "axios";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { order, OrderType } from "../../../../packages/db/generated/prisma";
-import { PriceType, SocketMsgPropType, SymbolType } from "@/lib/types";
-import { handelBuySellOrder } from "@/lib/functions/fetch-buy-sell-order";
-import { getCurrentAssetPrice } from "@/lib/functions/get-current-asset-price";
+import { PriceType, SocketMsgPropType, SymbolType } from "../../lib/types";
+import { getCurrentAssetPrice } from "../../functions/get-current-asset-price";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { handelBuySellOrder } from "../../functions/fetch-buy-sell-order";
 type OrderTableType = {
   selectedSymbol: SymbolType;
   latestWsArray: SocketMsgPropType[] | [];

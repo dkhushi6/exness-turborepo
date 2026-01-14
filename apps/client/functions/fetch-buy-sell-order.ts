@@ -1,7 +1,7 @@
 import { toast } from "sonner";
-import { order, OrderType } from "../../../../packages/db/generated/prisma";
 import axios from "axios";
-import { SymbolType } from "../types";
+import { SymbolType } from "../lib/types";
+import { OrderType } from "@repo/db";
 
 type handelBuySellOrderProps = {
   userId: string | undefined;

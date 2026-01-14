@@ -1,6 +1,10 @@
-import { PriceType, SocketMsgPropType, SymbolType } from "../types";
+import {
+  PriceType,
+  SocketMsgPropType,
+  SymbolType,
+  symbolMap,
+} from "../lib/types";
 import { UTCTimestamp } from "lightweight-charts";
-import { symbolMap } from "../types";
 
 export type SocketDataPropType = {
   k: { t: number; o: string; h: string; l: string; c: string };

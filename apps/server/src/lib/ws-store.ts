@@ -5,13 +5,27 @@ const url = process.env.WS_URL_PORT;
 if (!url) {
   throw new Error("WS_URL_PORT is not defined");
 }
-const ws = new WebSocket(url);
 const MAX_HISTORY = 3;
 export let latestWSMessages: any[] = [];
+let ws: WebSocket | null = null;
+let reconnectTimer: NodeJS.Timeout | null = null;
+
 function connect() {
+  if (ws) return;
+
+  ws = new WebSocket(url);
+
   console.log("connecting to ws server...");
+  // if (!ws.on) {
+  //   console.log("no ws connection");
+  //   connect();
+  // }
   ws.on("open", () => {
     console.log(`ws server connected at ${url}`);
+    if (reconnectTimer) {
+      clearTimeout(reconnectTimer);
+      reconnectTimer = null;
+    }
   });
   ws.on("message", (data) => {
     const msg = JSON.parse(data.toString());
@@ -23,10 +37,25 @@ function connect() {
   });
 
   ws.on("close", () => {
-    console.log("Disconnected, retrying...");
+    console.log("ws server closed...");
+    cleanupAndRetry();
   });
 
-  ws.on("error", console.error);
+  ws.on("error", (err) => {
+    console.error("WebSocket error:", err.message);
+    ws?.close();
+  });
+}
+function cleanupAndRetry() {
+  ws?.removeAllListeners();
+  ws = null;
+
+  if (reconnectTimer) return;
+  //send req after 2sec
+  reconnectTimer = setTimeout(() => {
+    reconnectTimer = null;
+    connect();
+  }, 2000);
 }
 connect();
 // export const setLatestWSMessage = (msg: any) => {

@@ -1,4 +1,4 @@
-import { PriceType, SocketMsgPropType } from "../types";
+import { PriceType, SocketMsgPropType } from "../lib/types";
 const symbols = ["BTCUSDT", "ETHUSDT", "SOLUSDT"] as const;
 
 type fetchWsDataProps = {

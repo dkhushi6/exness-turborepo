@@ -8,7 +8,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "../ui/hover-card";
-import { SymbolType } from "@/lib/types";
+import { SymbolType } from "../../lib/types";
 const symbolInfoType = {
   btc: { name: "Bitcoin", symbol: "BTCUSDT", color: "#B3995E" },
   eth: { name: "Ethereum", symbol: "ETHUSDT", color: "#82C995" },

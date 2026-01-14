@@ -1,6 +1,6 @@
 import axios from "axios";
 import Decimal from "decimal.js";
-import { SocketMsgPropType } from "../types";
+import { SocketMsgPropType } from "../lib/types";
 const symbolMap = {
   btc: "BTCUSDT",
   eth: "ETHUSDT",

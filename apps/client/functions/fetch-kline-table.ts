@@ -1,4 +1,4 @@
-import { SocketMsgPropType } from "../types";
+import { SocketMsgPropType } from "../lib/types";
 import { getkline } from "./get-kline-graph";
 import { CandlestickData } from "lightweight-charts";
 const symbolMap = {

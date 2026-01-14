@@ -1,8 +1,7 @@
 "use client";
-import { Card } from "@/components/ui/card";
-import { SocketDataPropType } from "../../lib/functions/get-latestest-price";
 import React, { useEffect, useState } from "react";
-import { PriceType } from "@/lib/types";
+import { Card } from "../ui/card";
+import { PriceType } from "../../lib/types";
 
 const symbols = ["BTCUSDT", "ETHUSDT", "SOLUSDT"] as const;
 

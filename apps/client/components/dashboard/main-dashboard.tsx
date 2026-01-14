@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { PriceType, SocketMsgPropType, SymbolType } from "@/lib/types";
 import CandelChart from "../charts/candel-chart";
 import OrderTable from "../order-table/order-table";
-import { getkline } from "@/lib/functions/get-kline-graph";
 import { CandlestickData } from "lightweight-charts";
-import { Button } from "../ui/button";
 import Navbar from "../navbar/navbar";
 import OrderHistory from "../order-history/order-history";
 import { order } from "../../../../packages/db/generated/prisma";
 import { useSession } from "next-auth/react";
-import { fetchOrdersView } from "@/lib/functions/fetch-orders-view";
-import { fetchWsData } from "@/lib/functions/fetch-ws-data";
-import { fetchKlineTable } from "@/lib/functions/fetch-kline-table";
 import DynamicTable from "../live-price/dynamic-table";
+import { PriceType, SocketMsgPropType, SymbolType } from "../../lib/types";
+import { fetchWsData } from "../../functions/fetch-ws-data";
+import { fetchKlineTable } from "../../functions/fetch-kline-table";
+import { fetchOrdersView } from "../../functions/fetch-orders-view";
 
 const MainDashboard = () => {
   const [candleData, setData] = useState<CandlestickData[]>([]);

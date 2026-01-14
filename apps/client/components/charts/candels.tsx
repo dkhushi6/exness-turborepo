@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import type { UTCTimestamp } from "lightweight-charts";
+import { useEffect, useRef } from "react";
 
 import {
   createChart,

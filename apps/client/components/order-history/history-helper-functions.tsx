@@ -1,14 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { order, OrderType } from "../../../../packages/db/generated/prisma";
 import { useSession } from "next-auth/react";
 import { CircleX } from "lucide-react";
 import { toast } from "sonner";
-import { SocketMsgPropType, symbolMap } from "@/lib/types";
+import { SocketMsgPropType, symbolMap } from "../../lib/types";
 import { Decimal } from "@prisma/client/runtime/library";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
 
 type AssetKey = keyof typeof symbolMap;
 

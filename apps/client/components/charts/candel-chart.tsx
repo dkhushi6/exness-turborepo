@@ -4,14 +4,14 @@ import React, { useEffect, useState } from "react";
 import Candles from "./candels";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
-
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "../ui/select";
+
 type symbolType = "btc" | "eth" | "sol";
 type SymbolInfoType = Record<
   symbolType,

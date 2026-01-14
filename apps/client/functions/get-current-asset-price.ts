@@ -1,4 +1,9 @@
-import { PriceType, SocketMsgPropType, symbolMap, SymbolType } from "../types";
+import {
+  PriceType,
+  SocketMsgPropType,
+  symbolMap,
+  SymbolType,
+} from "../lib/types";
 
 type getCurrentAssetPriceProps = {
   selectedSymbol: SymbolType;

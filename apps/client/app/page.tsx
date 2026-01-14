@@ -1,6 +1,6 @@
 "use client";
-import MainDashboard from "@/components/dashboard/main-dashboard";
 import React, { useEffect } from "react";
+import MainDashboard from "../components/dashboard/main-dashboard";
 
 const page = () => {
   return (

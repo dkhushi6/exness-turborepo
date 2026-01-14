@@ -1,15 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { order } from "../../../../packages/db/generated/prisma";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { CircleX } from "lucide-react";
 import { toast } from "sonner";
 import { OrdersTable } from "./history-helper-functions";
-import { SocketMsgPropType } from "@/lib/types";
+import { SocketMsgPropType } from "../../lib/types";
+import { Tabs, TabsList } from "@radix-ui/react-tabs";
+import { TabsContent, TabsTrigger } from "../ui/tabs";
+import { Badge } from "../ui/badge";
 type OrderHistoryType = {
   orders: order[];
   setOrders: React.Dispatch<React.SetStateAction<order[]>>;

@@ -4,7 +4,7 @@ import {
   getLatestPrice,
   SocketDataPropType,
 } from "../functions/get-latestest-price";
-import { SocketMsgPropType, SymbolType } from "../types";
+import { SocketMsgPropType, SymbolType } from "../lib/types";
 
 type getklinePropsTypes = {
   socketData?: SocketMsgPropType;
