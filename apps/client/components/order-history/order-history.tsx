@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { order } from "../../../../packages/db/generated/prisma";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -33,7 +33,7 @@ export default function OrderHistory({
         {
           userId: session?.user?.id,
           orderId,
-        }
+        },
       );
       console.log("updatedOrder", res.data);
       console.log("orderid is ", orderId);

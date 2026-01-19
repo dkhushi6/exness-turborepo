@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect } from "react";
 import { Button, buttonVariants } from "../ui/button";
 import { signOut, useSession } from "next-auth/react";
@@ -8,14 +9,10 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "../ui/hover-card";
-import { SymbolType } from "../../lib/types";
-const symbolInfoType = {
-  btc: { name: "Bitcoin", symbol: "BTCUSDT", color: "#B3995E" },
-  eth: { name: "Ethereum", symbol: "ETHUSDT", color: "#82C995" },
-  sol: { name: "Solana", symbol: "SOLUSDT", color: "#F28B82" },
-};
+import { SymbolInfoType, SymbolType } from "../../lib/types";
+
 type NavbarPropsType = {
-  symbolInfo: typeof symbolInfoType;
+  symbolInfo: SymbolInfoType;
   selectedSymbol: string;
   setSelectedSymbol: (symbol: SymbolType) => void;
   balance: string;
@@ -66,7 +63,7 @@ const Navbar = ({
                 {info.symbol}
               </Button>
             );
-          }
+          },
         )}
       </div>
       <div className="text-muted-foreground flex items-center gap-2 ">

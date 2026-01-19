@@ -16,10 +16,7 @@ function connect() {
   ws = new WebSocket(url);
 
   console.log("connecting to ws server...");
-  // if (!ws.on) {
-  //   console.log("no ws connection");
-  //   connect();
-  // }
+
   ws.on("open", () => {
     console.log(`ws server connected at ${url}`);
     if (reconnectTimer) {

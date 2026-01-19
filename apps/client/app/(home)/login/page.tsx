@@ -2,7 +2,6 @@
 import { Button } from "../../../components/ui/button";
 import React from "react";
 // import gg from "@/public/google.png";
-import Image from "next/image";
 import { signIn } from "next-auth/react";
 
 const page = () => {

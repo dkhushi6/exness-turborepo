@@ -15,12 +15,9 @@ export const getCurrentAssetPrice = ({
   setCurrentAssetPrice,
   latestWsArray,
 }: getCurrentAssetPriceProps) => {
-  //get the selected symbol
-  //get latestdataArr
-  //get setorderPrize
   const fullSymbol = symbolMap[selectedSymbol];
   const filteredArray = latestWsArray.filter(
-    (socketData) => socketData.symbol === fullSymbol
+    (socketData) => socketData.symbol === fullSymbol,
   );
   if (!filteredArray) {
     console.log("selected symbol dont have a match in filtered array");

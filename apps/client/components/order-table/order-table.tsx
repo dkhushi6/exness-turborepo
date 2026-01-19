@@ -2,8 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Card } from "../ui/card";
 import { useSession } from "next-auth/react";
-import { toast } from "sonner";
-import { order, OrderType } from "../../../../packages/db/generated/prisma";
+import { OrderType } from "../../../../packages/db/generated/prisma";
 import { PriceType, SocketMsgPropType, SymbolType } from "../../lib/types";
 import { getCurrentAssetPrice } from "../../functions/get-current-asset-price";
 import { Button } from "../ui/button";
@@ -20,7 +19,7 @@ const OrderTable = ({ selectedSymbol, latestWsArray }: OrderTableType) => {
   const [margin, setMargin] = useState(0);
   const { data: session } = useSession();
   const [currentAssetPrice, setCurrentAssetPrice] = useState<PriceType | null>(
-    null
+    null,
   );
 
   const [lot, setLot] = useState<number>(0);
@@ -188,7 +187,7 @@ const OrderTable = ({ selectedSymbol, latestWsArray }: OrderTableType) => {
                     orderType,
                     orderType === "BUY"
                       ? Number(currentAssetPrice.ask)
-                      : Number(currentAssetPrice.bid)
+                      : Number(currentAssetPrice.bid),
                   ).tp.min
                 : undefined
             }
@@ -198,7 +197,7 @@ const OrderTable = ({ selectedSymbol, latestWsArray }: OrderTableType) => {
                     orderType,
                     orderType === "BUY"
                       ? Number(currentAssetPrice.ask)
-                      : Number(currentAssetPrice.bid)
+                      : Number(currentAssetPrice.bid),
                   ).tp.max
                 : undefined
             }
@@ -220,7 +219,7 @@ const OrderTable = ({ selectedSymbol, latestWsArray }: OrderTableType) => {
                     orderType,
                     orderType === "BUY"
                       ? Number(currentAssetPrice.ask)
-                      : Number(currentAssetPrice.bid)
+                      : Number(currentAssetPrice.bid),
                   ).sl.min
                 : undefined
             }
@@ -230,7 +229,7 @@ const OrderTable = ({ selectedSymbol, latestWsArray }: OrderTableType) => {
                     orderType,
                     orderType === "BUY"
                       ? Number(currentAssetPrice.ask)
-                      : Number(currentAssetPrice.bid)
+                      : Number(currentAssetPrice.bid),
                   ).sl.max
                 : undefined
             }

@@ -33,8 +33,5 @@ export const getLatestPrice = ({ socketData, symbol }: GetLatestPriceProp) => {
     close: Number(socketData.k.c),
     time: socketData.k.t as UTCTimestamp,
   };
-  //   console.log("latestChunk in function ", latestChunk);
   return latestChunk;
 };
-
-//balance == total-margin + 1btc(ws price)

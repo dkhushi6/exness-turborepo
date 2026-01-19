@@ -1,8 +1,7 @@
 "use client";
-import { CandlestickData, UTCTimestamp } from "lightweight-charts";
-import React, { useEffect, useState } from "react";
+import { CandlestickData } from "lightweight-charts";
+import React from "react";
 import Candles from "./candels";
-import { Button } from "../ui/button";
 import { Card } from "../ui/card";
 import {
   Select,
@@ -11,18 +10,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-
-type symbolType = "btc" | "eth" | "sol";
-type SymbolInfoType = Record<
-  symbolType,
-  { name: string; symbol: string; color: string }
->;
+import { SymbolInfoType, SymbolType } from "../../lib/types";
 
 type candelChartPropstypes = {
   candleData: CandlestickData[];
-  selectedSymbol: symbolType;
+  selectedSymbol: SymbolType;
   symbolInfo: SymbolInfoType;
-  isLoading: boolean;
+  isLoading?: boolean;
   interval: string;
   setInterval: React.Dispatch<React.SetStateAction<string>>;
 };
@@ -30,7 +24,6 @@ const CandelChart = ({
   candleData,
   selectedSymbol,
   symbolInfo,
-  isLoading,
   interval,
   setInterval,
 }: candelChartPropstypes) => {

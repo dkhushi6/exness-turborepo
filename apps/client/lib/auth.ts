@@ -12,7 +12,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
+  pages: {
+    signIn: "/login",
+  },
   callbacks: {
+    async redirect({ url, baseUrl }) {
+      //  go to home after login
+      return baseUrl; // "/"
+    },
     async session({ session, user }) {
       session.user.id = user.id;
       return session;

@@ -1,9 +1,6 @@
 import axios from "axios";
 import { CandlestickData, UTCTimestamp } from "lightweight-charts";
-import {
-  getLatestPrice,
-  SocketDataPropType,
-} from "../functions/get-latestest-price";
+import { getLatestPrice } from "../functions/get-latestest-price";
 import { SocketMsgPropType, SymbolType } from "../lib/types";
 
 type getklinePropsTypes = {
@@ -32,7 +29,7 @@ export const getkline = async ({
     {
       symbol,
       interval,
-    }
+    },
   );
 
   const unformattedtable: {

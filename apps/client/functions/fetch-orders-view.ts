@@ -1,11 +1,7 @@
 import axios from "axios";
 import Decimal from "decimal.js";
-import { SocketMsgPropType } from "../lib/types";
-const symbolMap = {
-  btc: "BTCUSDT",
-  eth: "ETHUSDT",
-  sol: "SOLUSDT",
-} as const;
+import { SocketMsgPropType, symbolMap } from "../lib/types";
+
 export const fetchOrdersView = async ({
   setOrders,
   setBalance,
@@ -19,7 +15,7 @@ export const fetchOrdersView = async ({
       `${process.env.NEXT_PUBLIC_HOST_URL}/orders/view`,
       {
         userId,
-      }
+      },
     );
 
     const { usd, balance } = res.data.balance;
@@ -30,7 +26,7 @@ export const fetchOrdersView = async ({
         if (order.isClosed) continue;
         const symbol = symbolMap[order.asset as keyof typeof symbolMap];
         const filteredArray = latestWsArray.filter(
-          (socketData: SocketMsgPropType) => socketData.symbol === symbol
+          (socketData: SocketMsgPropType) => socketData.symbol === symbol,
         );
         // if (socketData.symbol !== symbol) continue;
         if (!filteredArray) {

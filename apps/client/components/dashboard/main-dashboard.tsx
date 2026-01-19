@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import CandelChart from "../charts/candel-chart";
 import OrderTable from "../order-table/order-table";
@@ -11,6 +12,7 @@ import { PriceType, SocketMsgPropType, SymbolType } from "../../lib/types";
 import { fetchWsData } from "../../functions/fetch-ws-data";
 import { fetchKlineTable } from "../../functions/fetch-kline-table";
 import { fetchOrdersView } from "../../functions/fetch-orders-view";
+import { LoaderCircle } from "lucide-react";
 
 const MainDashboard = () => {
   const [candleData, setData] = useState<CandlestickData[]>([]);
@@ -20,15 +22,15 @@ const MainDashboard = () => {
 
   const [selectedSymbol, setSelectedSymbol] = useState<SymbolType>("btc");
   const [dynamicWsData, setDynamicWsData] = useState<Record<string, PriceType>>(
-    {}
+    {},
   );
   const [balance, setBalance] = useState("5000");
 
   const { data: session } = useSession();
-  const [currentAssetWsData, setCurrentAssetWsData] =
-    useState<SocketMsgPropType | null>(null);
+  // const [currentAssetWsData, setCurrentAssetWsData] =
+  //   useState<SocketMsgPropType | null>(null);
   const [latestWsArray, setLatestWsArray] = useState<SocketMsgPropType[] | []>(
-    []
+    [],
   );
 
   const [isLoading, setIsLoading] = useState(false);
@@ -41,7 +43,11 @@ const MainDashboard = () => {
   };
 
   useEffect(() => {
-    fetchWsData({ setDynamicWsData, setLatestWsArray });
+    const cleanup = fetchWsData({ setDynamicWsData, setLatestWsArray });
+
+    return () => {
+      cleanup?.();
+    };
   }, []);
   useEffect(() => {
     //fetch latestwsdata for selected symbol
@@ -67,7 +73,15 @@ const MainDashboard = () => {
       setTradableAmt,
       setLockedAmt,
     });
-  }, [session, orders]);
+  }, [session?.user?.id, latestWsArray]);
+  if (isLoading) {
+    return (
+      <p className="animate-spin flex justify-center items-center h-screen">
+        <LoaderCircle />
+      </p>
+    );
+  }
+
   return (
     <div className="bg-black h-screen  w-full">
       <Navbar
@@ -89,7 +103,6 @@ const MainDashboard = () => {
               candleData={candleData}
               selectedSymbol={selectedSymbol}
               symbolInfo={symbolInfo}
-              isLoading={isLoading}
               interval={interval}
               setInterval={setInterval}
             />

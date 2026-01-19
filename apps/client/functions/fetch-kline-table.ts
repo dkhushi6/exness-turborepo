@@ -29,7 +29,7 @@ export const fetchKlineTable = async ({
     }
     const fullSymbol = symbolMap[selectedSymbol];
     const filteredArray = latestWsArray.filter(
-      (socketData) => socketData.symbol === fullSymbol
+      (socketData) => socketData.symbol === fullSymbol,
     );
     const latestSocketData =
       filteredArray.length > 0

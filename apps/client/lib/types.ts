@@ -13,3 +13,7 @@ export type PriceType = {
   bid: string;
   ask: string;
 };
+export type SymbolInfoType = Record<
+  SymbolType,
+  { name: string; symbol: string; color: string }
+>;
