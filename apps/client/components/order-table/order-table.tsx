@@ -3,21 +3,32 @@ import React, { useEffect, useState } from "react";
 import { Card } from "../ui/card";
 import { useSession } from "next-auth/react";
 import { OrderType } from "../../../../packages/db/generated/prisma";
-import { PriceType, SocketMsgPropType, SymbolType } from "../../lib/types";
+import {
+  PriceType,
+  SocketMsgPropType,
+  symbolIcons,
+  symbolMap,
+  SymbolType,
+} from "../../lib/types";
 import { getCurrentAssetPrice } from "../../functions/get-current-asset-price";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { handelBuySellOrder } from "../../functions/fetch-buy-sell-order";
+import Image from "next/image";
 type OrderTableType = {
   selectedSymbol: SymbolType;
   latestWsArray: SocketMsgPropType[] | [];
 };
+type FullSymbolType = (typeof symbolMap)[SymbolType];
 
 const OrderTable = ({ selectedSymbol, latestWsArray }: OrderTableType) => {
   const [orderType, setOrderType] = useState<OrderType | null>(null);
   const [leverage, setLeverage] = useState<number>(1);
   const [margin, setMargin] = useState(0);
   const { data: session } = useSession();
+  const [fullSymbol, setFullSymbol] = useState<FullSymbolType>(
+    symbolMap[selectedSymbol],
+  );
   const [currentAssetPrice, setCurrentAssetPrice] = useState<PriceType | null>(
     null,
   );
@@ -56,6 +67,8 @@ const OrderTable = ({ selectedSymbol, latestWsArray }: OrderTableType) => {
   }, [currentAssetPrice, orderType, leverage, lot]);
 
   useEffect(() => {
+    const sym = symbolMap[selectedSymbol];
+    setFullSymbol(sym);
     getCurrentAssetPrice({
       selectedSymbol,
       setCurrentAssetPrice,
@@ -110,8 +123,16 @@ const OrderTable = ({ selectedSymbol, latestWsArray }: OrderTableType) => {
   }, [orderType, currentAssetPrice]);
 
   return (
-    <Card className="p-6 rounded-lg max-w-md  border-gray-800 h-full">
-      <div className="">{selectedSymbol}</div>
+    <Card className="p-6 rounded-lg max-w-md  border h-full">
+      <div className="flex gap-2  text-lg">
+        <Image
+          src={symbolIcons[fullSymbol] || ""}
+          alt={fullSymbol}
+          width={25}
+          height={20}
+        />
+        {selectedSymbol}
+      </div>
       <div className="flex gap-3 mb-6">
         <Button
           className={`flex-1 h-[88px] rounded-lg font-semibold text-base transition-all ${

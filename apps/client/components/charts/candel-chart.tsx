@@ -10,7 +10,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { SymbolInfoType, SymbolType } from "../../lib/types";
+import {
+  symbolIcons,
+  SymbolInfoType,
+  symbolMap,
+  SymbolType,
+} from "../../lib/types";
+import Image from "next/image";
 
 type candelChartPropstypes = {
   candleData: CandlestickData[];
@@ -28,17 +34,21 @@ const CandelChart = ({
   setInterval,
 }: candelChartPropstypes) => {
   const currentInfo = symbolInfo[selectedSymbol];
-
+  const fullSymbol = symbolMap[selectedSymbol];
   return (
     <div className="w-full max-w-7xl mx-auto p-4 space-y-6">
       {/* Main Chart Card */}
-      <Card className="w-full  border-gray-800 shadow-2xl ">
+      <Card className="w-full   shadow-2xl ">
         {/* Chart Header */}
-        <div
-          className={`px-6 pb-3  border-b border-gray-800 flex justify-between`}
-        >
+        <div className={`px-6 pb-3  border-b  flex justify-between`}>
           <div className="flex items-center justify-between flex-wrap gap-4">
-            <div className="space-y-1">
+            <div className="space-y-1 flex gap-3">
+              <Image
+                src={symbolIcons[fullSymbol] || ""}
+                alt={fullSymbol}
+                width={30}
+                height={20}
+              />
               <h2 className="text-2xl font-bold text-white flex items-center gap-2">
                 {currentInfo.name}
                 <span className="text-gray-400 text-lg font-normal">
@@ -49,28 +59,20 @@ const CandelChart = ({
           </div>
           <div>
             <Select value={interval} onValueChange={(e) => setInterval(e)}>
-              <SelectTrigger className="w-[100px] text-white ">
+              <SelectTrigger className="w-[100px]  ">
                 <SelectValue placeholder="1min" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="1min">1min</SelectItem>
-                <SelectItem value="5min">5min</SelectItem>
-                <SelectItem value="10min">10min</SelectItem>
-                <SelectItem value="30min">30min</SelectItem>
+                <SelectItem value="1min">1 min</SelectItem>
+                <SelectItem value="5min">5 min</SelectItem>
+                <SelectItem value="10min">10 min</SelectItem>
+                <SelectItem value="30min">30 min</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </div>
 
         <div className="  relative">
-          {/* {isLoading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
-              <div className="flex flex-col items-center gap-3">
-                <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
-                <p className="text-gray-400">Loading chart data...</p>
-              </div>
-            </div>
-          )} */}
           <Candles candleData={candleData} />
         </div>
       </Card>

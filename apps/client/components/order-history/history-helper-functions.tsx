@@ -2,9 +2,10 @@
 import React from "react";
 import { order, OrderType } from "../../../../packages/db/generated/prisma";
 import { CircleX } from "lucide-react";
-import { SocketMsgPropType, symbolMap } from "../../lib/types";
+import { SocketMsgPropType, symbolIcons, symbolMap } from "../../lib/types";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
+import Image from "next/image";
 
 export const EmptyState = ({ label }: { label: string }) => (
   <div className="py-12 text-center text-gray-500">No {label} trades</div>
@@ -105,9 +106,19 @@ export function OrdersTable({
             <tr key={o.id} className="border-b border-gray-800 ">
               <td className="py-4 px-2">
                 <div className="flex items-center gap-2">
-                  <span className="w-6 h-6 bg-gray-700 rounded-full flex items-center justify-center text-xs">
-                    🇺🇸
-                  </span>
+                  <Image
+                    src={
+                      symbolIcons[
+                        symbolMap[
+                          o.asset as keyof typeof symbolMap
+                        ] as keyof typeof symbolIcons
+                      ] || ""
+                    }
+                    alt={o.asset}
+                    width={18}
+                    height={18}
+                    className="rounded-full"
+                  />
                   {o.asset}
                 </div>
               </td>
@@ -190,8 +201,12 @@ export function OrdersTable({
                   <td className="py-4 px-2 text-xs text-gray-400">jf</td>
 
                   <td className="py-4 px-2 text-xs text-gray-400">jf</td>
-                  <td className="py-4 px-2 text-xs text-gray-400">
-                    {Number(o.pnl)}
+                  <td
+                    className={`py-4 px-2 ${
+                      Number(o.pnl) >= 0 ? "text-green-500" : "text-red-500"
+                    }`}
+                  >
+                    ${Number(o.pnl).toFixed(2)}
                   </td>
                 </>
               )}

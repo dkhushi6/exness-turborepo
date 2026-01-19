@@ -17,3 +17,8 @@ export type SymbolInfoType = Record<
   SymbolType,
   { name: string; symbol: string; color: string }
 >;
+export const symbolIcons: Record<string, string> = {
+  BTCUSDT: "/bitcoin.png",
+  ETHUSDT: "/ethereum.png",
+  SOLUSDT: "/solana.png",
+};
