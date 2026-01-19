@@ -82,7 +82,7 @@ const MainDashboard = () => {
         tradableAmt={tradableAmt}
         lockedAmt={lockedAmt}
       />
-      <div className="flex ">
+      <div className="flex  ">
         {" "}
         <div className="w-1/4">
           <DynamicTable dynamicWsData={dynamicWsData} />

@@ -36,10 +36,8 @@ const CandelChart = ({
   const currentInfo = symbolInfo[selectedSymbol];
   const fullSymbol = symbolMap[selectedSymbol];
   return (
-    <div className="w-full max-w-7xl mx-auto p-4 space-y-6">
-      {/* Main Chart Card */}
+    <div className="w-full max-w-7xl mx-auto px-4 space-y-6">
       <Card className="w-full   shadow-2xl ">
-        {/* Chart Header */}
         <div className={`px-6 pb-3  border-b  flex justify-between`}>
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div className="space-y-1 flex gap-3">
@@ -49,7 +47,7 @@ const CandelChart = ({
                 width={30}
                 height={20}
               />
-              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+              <h2 className="text-2xl font-bold  flex items-center gap-2">
                 {currentInfo.name}
                 <span className="text-gray-400 text-lg font-normal">
                   ({currentInfo.symbol})

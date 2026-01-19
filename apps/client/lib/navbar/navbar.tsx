@@ -9,7 +9,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "../../components/ui/hover-card";
-import { SymbolInfoType, SymbolType } from "../../lib/types";
+import { symbolIcons, SymbolInfoType, SymbolType } from "../../lib/types";
 import ThemeSwitcher from "../theme/theme-switcher";
 
 type NavbarPropsType = {
@@ -30,84 +30,115 @@ const Navbar = ({
   lockedAmt,
 }: NavbarPropsType) => {
   const { data: session } = useSession();
+
   useEffect(() => {
     if (!session) {
       console.log("no session");
     }
   }, [session]);
+
   return (
-    <div className="flex justify-between items-center px-6 py-4  border-b border-[#2a2f3e]">
-      <div className="text-[#ffd633] text-4xl font-semibold tracking-tight">
+    <div
+      className="
+        relative flex justify-between items-center px-6 py-4 border-b mb-5
+       
+      "
+    >
+      <div className="text-[#ffd633] text-4xl font-semibold tracking-tight z-20">
         exness
       </div>
-      <div className="flex gap-2 flex-wrap">
-        {(Object.keys(symbolInfo) as Array<"btc" | "eth" | "sol">).map(
-          (symbol) => {
-            const info = symbolInfo[symbol];
-            const isActive = selectedSymbol === symbol;
 
-            return (
-              <Button
-                key={symbol}
-                onClick={() => setSelectedSymbol(symbol)}
-                className={`
-                  px-5 py-2.5 rounded-md font-semibold transition-all text-sm
-                  ${
-                    isActive
-                      ? "text-white shadow-lg border-0"
-                      : "bg-[#252936] text-[#8b92a7] hover:bg-[#2a2f3e] hover:text-white border-0"
-                  }
-                `}
-                style={isActive ? { backgroundColor: info.color } : {}}
-                variant="outline"
-              >
-                {info.symbol}
-              </Button>
-            );
-          },
-        )}
-      </div>
-      <div className="text-muted-foreground flex items-center gap-2 ">
-        Balance:{" "}
-        <div className="text-sm flex items-center gap-2 text-white">
-          <div className="text-xl "> ${balance}</div>
-          <div className="text-green-400">tradable:{tradableAmt}</div>
-          <div className="text-red-500">locked:{lockedAmt}</div>
-        </div>
-      </div>
-      <div>
+      {/* Only show symbols & balance if session exists */}
+      {session?.user && (
+        <>
+          <div className="flex gap-2 flex-wrap z-20">
+            {(Object.keys(symbolInfo) as Array<"btc" | "eth" | "sol">).map(
+              (symbol) => {
+                const info = symbolInfo[symbol];
+                const isActive = selectedSymbol === symbol;
+
+                return (
+                  <Button
+                    key={symbol}
+                    onClick={() => setSelectedSymbol(symbol)}
+                    className={`
+                      px-5 py-5 font-semibold text-[17px] rounded-md transition-all
+                      border-b-2 border-transparent
+                      data-[active=true]:border-accent
+                      data-[active=true]:shadow-md
+                      data-[active=true]:bg-muted
+                      data-[active=true]:text-foreground
+                      hover:bg-muted/50 hover:text-foreground
+                    `}
+                    variant="ghost"
+                    data-active={isActive ? "true" : "false"}
+                  >
+                    <Image
+                      src={symbolIcons[info.symbol] || ""}
+                      alt={info.symbol}
+                      width={28}
+                      height={20}
+                    />
+                    {info.symbol}
+                  </Button>
+                );
+              },
+            )}
+          </div>
+
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-2 text-sm text-muted-foreground z-20">
+            <span className="font-medium">Balance:</span>
+
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="flex items-baseline gap-1">
+                <span className="text-xl font-semibold text-foreground">
+                  ${balance}
+                </span>
+              </div>
+              <div className="flex items-baseline gap-1">
+                <span className="text-muted-foreground">Tradable:</span>
+                <span className="text-green-500 font-medium">
+                  ${tradableAmt}
+                </span>
+              </div>
+              <div className="flex items-baseline gap-1">
+                <span className="text-muted-foreground">Locked:</span>
+                <span className="text-red-500 font-medium">${lockedAmt}</span>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      <div className="z-20">
         <ThemeSwitcher />
       </div>
-      <div>
+
+      <div className="z-20">
         {session?.user ? (
-          <div>
-            <HoverCard>
-              <HoverCardTrigger>
-                <Image
-                  alt="user-image"
-                  src={session.user.image || "default.jpg"}
-                  width={32}
-                  height={32}
-                  className="rounded-full"
-                />
-              </HoverCardTrigger>
-              <HoverCardContent>
-                <Button variant="ghost" onClick={() => signOut()}>
-                  LogOut
-                </Button>
-              </HoverCardContent>
-            </HoverCard>
-          </div>
+          <HoverCard>
+            <HoverCardTrigger>
+              <Image
+                alt="user-image"
+                src={session.user.image || "default.jpg"}
+                width={32}
+                height={32}
+                className="rounded-full"
+              />
+            </HoverCardTrigger>
+            <HoverCardContent>
+              <Button variant="ghost" onClick={() => signOut()}>
+                LogOut
+              </Button>
+            </HoverCardContent>
+          </HoverCard>
         ) : (
-          <div>
-            {" "}
-            <Link
-              href="/login"
-              className={buttonVariants({ variant: "outline" })}
-            >
-              Login
-            </Link>
-          </div>
+          <Link
+            href="/login"
+            className={buttonVariants({ variant: "outline" })}
+          >
+            Login
+          </Link>
         )}
       </div>
     </div>

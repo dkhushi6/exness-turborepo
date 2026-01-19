@@ -128,7 +128,7 @@ const OrderTable = ({ selectedSymbol, latestWsArray }: OrderTableType) => {
         <Image
           src={symbolIcons[fullSymbol] || ""}
           alt={fullSymbol}
-          width={25}
+          width={28}
           height={20}
         />
         {selectedSymbol}
@@ -171,7 +171,7 @@ const OrderTable = ({ selectedSymbol, latestWsArray }: OrderTableType) => {
             placeholder="Lots"
             value={lot}
             onChange={(e) => setLot(Number(e.target.value))}
-            className="   placeholder:text-[#5a6175] border-muted-foreground h-12 rounded-lg focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+            className="   placeholder:text-[#5a6175] border h-12 rounded-lg focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
           />
         </div>
       </div>
@@ -186,7 +186,7 @@ const OrderTable = ({ selectedSymbol, latestWsArray }: OrderTableType) => {
               className={`py-2.5 px-3 rounded-md text-sm font-medium transition-all ${
                 leverage === lev
                   ? "bg-muted-foreground text-white"
-                  : " text-[#8b92a7] hover:bg-[#2a2f3e]"
+                  : "  hover:bg-[#535764a1]"
               }`}
             >
               1:{lev}

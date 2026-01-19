@@ -48,14 +48,42 @@ export default function OrderHistory({
   return (
     <div className=" rounded-lg p-4 text-white">
       <Tabs defaultValue="open">
-        <TabsList className="grid grid-cols-2 bg-[#252b3b]">
-          <TabsTrigger value="open">
+        <TabsList className="grid grid-cols-2 rounded-lg p-1 bg-gray-200 dark:bg-[#191919]">
+          <TabsTrigger
+            value="open"
+            className="
+        data-[state=active]:bg-white
+        data-[state=active]:dark:bg-[#2e2d2d]
+        data-[state=active]:text-foreground
+        data-[state=inactive]:text-gray-600
+        data-[state=inactive]:dark:text-gray-400
+        rounded-md transition-all
+        py-2 px-4
+      "
+          >
             Open
-            <Badge className="ml-2 bg-muted-foreground">
+            <Badge className="ml-2 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-gray-200">
               {ordersOpen.length}
             </Badge>
           </TabsTrigger>
-          <TabsTrigger value="closed">Closed</TabsTrigger>
+
+          <TabsTrigger
+            value="closed"
+            className="
+        data-[state=active]:bg-white
+        data-[state=active]:dark:bg-[#2e2d2d]
+        data-[state=active]:text-foreground
+        data-[state=inactive]:text-gray-600
+        data-[state=inactive]:dark:text-gray-400
+        rounded-md transition-all
+        py-2 px-4
+      "
+          >
+            Closed
+            <Badge className="ml-2 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-gray-200">
+              {closeOrder.length}
+            </Badge>
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="open">
