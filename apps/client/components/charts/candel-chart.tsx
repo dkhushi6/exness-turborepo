@@ -32,7 +32,7 @@ const CandelChart = ({
   return (
     <div className="w-full max-w-7xl mx-auto p-4 space-y-6">
       {/* Main Chart Card */}
-      <Card className="w-full bg-black border-gray-800 shadow-2xl ">
+      <Card className="w-full  border-gray-800 shadow-2xl ">
         {/* Chart Header */}
         <div
           className={`px-6 pb-3  border-b border-gray-800 flex justify-between`}
@@ -62,7 +62,7 @@ const CandelChart = ({
           </div>
         </div>
 
-        <div className=" bg-black relative">
+        <div className="  relative">
           {/* {isLoading && (
             <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
               <div className="flex flex-col items-center gap-3">

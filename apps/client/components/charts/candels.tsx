@@ -25,7 +25,6 @@ export default function Candles({
         textColor: "white",
         background: {
           type: ColorType.Solid,
-          color: "black",
         },
       },
       width: chartRef.current.clientWidth,

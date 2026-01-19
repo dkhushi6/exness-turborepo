@@ -10,7 +10,7 @@ type DynamicTablePropTypes = {
 };
 const DynamicTable = ({ dynamicWsData }: DynamicTablePropTypes) => {
   return (
-    <Card className="w-full  text-white space-y-2 bg-black border-gray-800 h-full">
+    <Card className="w-full   space-y-2 border-gray-800 h-full">
       <div className="border-b flex justify-between font-semibold px-2 pb-1">
         <div>Symbol</div>
         <div>Bid</div>

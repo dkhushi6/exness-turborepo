@@ -110,8 +110,8 @@ const OrderTable = ({ selectedSymbol, latestWsArray }: OrderTableType) => {
   }, [orderType, currentAssetPrice]);
 
   return (
-    <Card className="p-6 rounded-lg max-w-md bg-black border-gray-800 h-full">
-      <div className="text-white">{selectedSymbol}</div>
+    <Card className="p-6 rounded-lg max-w-md  border-gray-800 h-full">
+      <div className="">{selectedSymbol}</div>
       <div className="flex gap-3 mb-6">
         <Button
           className={`flex-1 h-[88px] rounded-lg font-semibold text-base transition-all ${
@@ -150,7 +150,7 @@ const OrderTable = ({ selectedSymbol, latestWsArray }: OrderTableType) => {
             placeholder="Lots"
             value={lot}
             onChange={(e) => setLot(Number(e.target.value))}
-            className="  text-white placeholder:text-[#5a6175] border-muted-foreground h-12 rounded-lg focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
+            className="   placeholder:text-[#5a6175] border-muted-foreground h-12 rounded-lg focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6]"
           />
         </div>
       </div>
@@ -164,8 +164,8 @@ const OrderTable = ({ selectedSymbol, latestWsArray }: OrderTableType) => {
               onClick={() => setLeverage(lev)}
               className={`py-2.5 px-3 rounded-md text-sm font-medium transition-all ${
                 leverage === lev
-                  ? "bg-[#1a1d28] text-white"
-                  : "bg-[#33363b] text-[#8b92a7] hover:bg-[#2a2f3e]"
+                  ? "bg-muted-foreground text-white"
+                  : " text-[#8b92a7] hover:bg-[#2a2f3e]"
               }`}
             >
               1:{lev}
@@ -203,7 +203,7 @@ const OrderTable = ({ selectedSymbol, latestWsArray }: OrderTableType) => {
             }
             value={takeProfit}
             onChange={(e) => setTakeProfit(Number(e.target.value))}
-            className="text-white placeholder:text-[#5a6175]"
+            className=" placeholder:text-[#5a6175]"
           />
         </div>
       </div>
@@ -235,7 +235,7 @@ const OrderTable = ({ selectedSymbol, latestWsArray }: OrderTableType) => {
             }
             value={stopLoss}
             onChange={(e) => setStopLoss(Number(e.target.value))}
-            className="text-white placeholder:text-[#5a6175]"
+            className=" placeholder:text-[#5a6175]"
           />
         </div>
       </div>

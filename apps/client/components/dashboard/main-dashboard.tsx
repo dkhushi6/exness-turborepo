@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import CandelChart from "../charts/candel-chart";
 import OrderTable from "../order-table/order-table";
 import { CandlestickData } from "lightweight-charts";
-import Navbar from "../navbar/navbar";
+import Navbar from "../../lib/navbar/navbar";
 import OrderHistory from "../order-history/order-history";
 import { order } from "../../../../packages/db/generated/prisma";
 import { useSession } from "next-auth/react";
@@ -12,7 +12,6 @@ import { PriceType, SocketMsgPropType, SymbolType } from "../../lib/types";
 import { fetchWsData } from "../../functions/fetch-ws-data";
 import { fetchKlineTable } from "../../functions/fetch-kline-table";
 import { fetchOrdersView } from "../../functions/fetch-orders-view";
-import { LoaderCircle } from "lucide-react";
 
 const MainDashboard = () => {
   const [candleData, setData] = useState<CandlestickData[]>([]);
@@ -33,7 +32,6 @@ const MainDashboard = () => {
     [],
   );
 
-  const [isLoading, setIsLoading] = useState(false);
   const [interval, setInterval] = useState("1min");
 
   const symbolInfo = {
@@ -52,7 +50,6 @@ const MainDashboard = () => {
   useEffect(() => {
     //fetch latestwsdata for selected symbol
     fetchKlineTable({
-      setIsLoading,
       latestWsArray,
       selectedSymbol,
       interval,
@@ -74,16 +71,9 @@ const MainDashboard = () => {
       setLockedAmt,
     });
   }, [session?.user?.id, latestWsArray]);
-  if (isLoading) {
-    return (
-      <p className="animate-spin flex justify-center items-center h-screen">
-        <LoaderCircle />
-      </p>
-    );
-  }
 
   return (
-    <div className="bg-black h-screen  w-full">
+    <div className=" h-screen  w-full">
       <Navbar
         symbolInfo={symbolInfo}
         selectedSymbol={selectedSymbol}

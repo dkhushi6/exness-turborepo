@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
-import { Button, buttonVariants } from "../ui/button";
+import { Button, buttonVariants } from "../../components/ui/button";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,8 +8,9 @@ import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "../ui/hover-card";
+} from "../../components/ui/hover-card";
 import { SymbolInfoType, SymbolType } from "../../lib/types";
+import ThemeSwitcher from "../theme/theme-switcher";
 
 type NavbarPropsType = {
   symbolInfo: SymbolInfoType;
@@ -73,6 +74,9 @@ const Navbar = ({
           <div className="text-green-400">tradable:{tradableAmt}</div>
           <div className="text-red-500">locked:{lockedAmt}</div>
         </div>
+      </div>
+      <div>
+        <ThemeSwitcher />
       </div>
       <div>
         {session?.user ? (

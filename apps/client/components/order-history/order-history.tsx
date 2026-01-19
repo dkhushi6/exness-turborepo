@@ -46,7 +46,7 @@ export default function OrderHistory({
   };
   useEffect(() => {}, [latestWsArray]);
   return (
-    <div className="bg-black rounded-lg p-4 text-white">
+    <div className=" rounded-lg p-4 text-white">
       <Tabs defaultValue="open">
         <TabsList className="grid grid-cols-2 bg-[#252b3b]">
           <TabsTrigger value="open">
