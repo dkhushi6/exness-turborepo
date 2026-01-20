@@ -12,6 +12,8 @@ import { PriceType, SocketMsgPropType, SymbolType } from "../../lib/types";
 import { fetchWsData } from "../../functions/fetch-ws-data";
 import { fetchKlineTable } from "../../functions/fetch-kline-table";
 import { fetchOrdersView } from "../../functions/fetch-orders-view";
+import MainComponents from "./main-components";
+import LandingPage from "../landing/landing-page";
 
 const MainDashboard = () => {
   const [candleData, setData] = useState<CandlestickData[]>([]);
@@ -82,36 +84,21 @@ const MainDashboard = () => {
         tradableAmt={tradableAmt}
         lockedAmt={lockedAmt}
       />
-      <div className="flex  ">
-        {" "}
-        <div className="w-1/4">
-          <DynamicTable dynamicWsData={dynamicWsData} />
-        </div>
-        <div className=" w-2/4">
-          <div>
-            <CandelChart
-              candleData={candleData}
-              selectedSymbol={selectedSymbol}
-              symbolInfo={symbolInfo}
-              interval={interval}
-              setInterval={setInterval}
-            />
-          </div>
-          <div>
-            <OrderHistory
-              orders={orders}
-              setOrders={setOrders}
-              latestWsArray={latestWsArray}
-            />
-          </div>
-        </div>
-        <div className="w-1/4">
-          <OrderTable
-            selectedSymbol={selectedSymbol}
-            latestWsArray={latestWsArray}
-          />
-        </div>
-      </div>
+      {session?.user?.id ? (
+        <MainComponents
+          dynamicWsData={dynamicWsData}
+          candleData={candleData}
+          selectedSymbol={selectedSymbol}
+          symbolInfo={symbolInfo}
+          interval={interval}
+          orders={orders}
+          setOrders={setOrders}
+          latestWsArray={latestWsArray}
+          setInterval={setInterval}
+        />
+      ) : (
+        <LandingPage />
+      )}
     </div>
   );
 };

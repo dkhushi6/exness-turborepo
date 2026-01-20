@@ -44,7 +44,7 @@ const Navbar = ({
        
       "
     >
-      <div className="text-[#ffd633] text-4xl font-semibold tracking-tight z-20">
+      <div className="text-primary text-4xl font-semibold tracking-tight z-20">
         exness
       </div>
 

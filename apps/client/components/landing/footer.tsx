@@ -1,10 +1,10 @@
 export const Footer = () => {
   return (
-    <footer className="border-t border-border bg-[#171618]">
+    <footer className="border-t border-border dark:bg-[#171618]">
       <div className="container mx-auto px-6 py-10">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
-            <h3 className="text-2xl font-semibold  text-[#FFDE01]">exness</h3>
+            <h3 className="text-2xl font-semibold  text-primary">exness</h3>
             <p className="mt-1 text-sm text-muted-foreground max-w-md">
               Trade global markets with confidence on a secure and
               high-performance trading platform.

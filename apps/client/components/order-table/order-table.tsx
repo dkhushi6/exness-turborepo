@@ -304,11 +304,12 @@ const OrderTable = ({ selectedSymbol, latestWsArray }: OrderTableType) => {
             </Button>
           )}
           <Button
+            variant="outline"
             onClick={() => {
               setOrderType(null);
               setLot(0);
             }}
-            className="flex-1 w-full mt-2 hover:bg-[#2a2f3e] bg-[#282829]  py-5 rounded-[7px]  text-sm"
+            className="flex-1 w-full mt-2   py-5 rounded-[7px]  text-sm"
           >
             Cancel
           </Button>
