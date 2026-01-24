@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.CORS_ORIGIN_URL,
     credentials: true,
   }),
 );
@@ -25,5 +25,5 @@ app.get("/", (_req, res) => {
 dotenv.config();
 const PORT = process.env.PORT || 8080;
 server.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
