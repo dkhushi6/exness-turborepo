@@ -13,13 +13,15 @@ app.use(
   cors({
     origin: "http://localhost:3000",
     credentials: true,
-  })
+  }),
 );
 const server = createServer(app);
 app.use("/market", klineRoute);
 app.use("/orders", ordersRoutes);
 app.use("/orders", allOrdersRoutes);
-
+app.get("/", (_req, res) => {
+  res.send("Backend is running 🚀");
+});
 dotenv.config();
 const PORT = process.env.PORT || 8080;
 server.listen(PORT, () => {
