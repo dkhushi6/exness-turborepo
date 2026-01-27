@@ -74,8 +74,8 @@ model order {
   quantity Decimal
   leverage Decimal
   openPrice Decimal
-  takeProfit Decimal
-  stopLoss Decimal
+  takeProfit Decimal?
+  stopLoss Decimal?
 createdAt DateTime @default(now())
 isClosed Boolean @default(false)
 closedAt DateTime?
