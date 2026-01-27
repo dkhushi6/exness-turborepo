@@ -9,6 +9,3 @@ setInterval(() => {
   const wsDataArray = snapshot;
   liquidator(wsDataArray);
 }, 5000);
-
-async function main() {}
-main().catch(console.error);

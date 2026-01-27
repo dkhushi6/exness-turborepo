@@ -75,52 +75,38 @@ const OrderTable = ({ selectedSymbol, latestWsArray }: OrderTableType) => {
       latestWsArray,
     });
   }, [latestWsArray, currentAssetPrice, selectedSymbol]);
-  const getPriceBounds = (orderType: OrderType, price: number) => {
-    const percent = 0.2;
+  // Compute static bounds based on current WS price
+
+  const getWsPriceBounds = (orderType: OrderType, price: number) => {
+    const percent = 0.2; // 20% max range from current price
     if (orderType === "BUY") {
       return {
         tp: {
-          min: price * 1.001,
+          min: price * 1.001, // at least 0.1% above
           max: price * (1 + percent),
-          default: price * 1.01,
+          default: price * 1.01, // default 1% above
         },
         sl: {
           min: price * (1 - percent),
-          max: price * 0.999,
-          default: price * 0.99,
+          max: price * 0.999, // just below current price
+          default: price * 0.99, // default 1% below
         },
       };
     }
 
-    // SELL
     return {
       tp: {
         min: price * (1 - percent),
-        max: price * 0.999,
-        default: price * 0.99,
+        max: price * 0.999, // just below current price
+        default: price * 0.99, // default 1% below
       },
       sl: {
-        min: price * 1.001,
+        min: price * 1.001, // just above current price
         max: price * (1 + percent),
-        default: price * 1.01,
+        default: price * 1.01, // default 1% above
       },
     };
   };
-  useEffect(() => {
-    if (!orderType || !currentAssetPrice) return;
-
-    const price =
-      orderType === "BUY"
-        ? Number(currentAssetPrice.ask)
-        : Number(currentAssetPrice.bid);
-
-    if (!price) return;
-
-    const bounds = getPriceBounds(orderType, price);
-
-    setTakeProfit(Number(bounds.tp.default.toFixed(2)));
-    setStopLoss(Number(bounds.sl.default.toFixed(2)));
-  }, [orderType, currentAssetPrice]);
 
   return (
     <Card className="p-6 rounded-lg max-w-md  border h-full">
@@ -194,72 +180,114 @@ const OrderTable = ({ selectedSymbol, latestWsArray }: OrderTableType) => {
           ))}
         </div>
       </div>
-      <div className="mb-5">
-        <div className="text-[#8b92a7] text-sm font-medium mb-2">
-          TakeProfit
+
+      {orderType && currentAssetPrice && (
+        <div className="mb-5">
+          <div className="text-sm font-medium mb-2">TakeProfit</div>
+          <div className="flex justify-between gap-2">
+            <Input
+              type="number"
+              step="0.1"
+              value={takeProfit}
+              onChange={(e) => {
+                const price =
+                  orderType === "BUY"
+                    ? Number(currentAssetPrice.ask).toFixed(2)
+                    : Number(currentAssetPrice.bid).toFixed(2);
+                const bounds = getWsPriceBounds(orderType, Number(price));
+                let val = Number(e.target.value);
+                if (val < bounds.tp.min) val = bounds.tp.min;
+                if (val > bounds.tp.max) val = bounds.tp.max;
+                val = Number(val.toFixed(2));
+                setTakeProfit(val);
+              }}
+              className="placeholder:text-[#5a6175]"
+            />{" "}
+            {takeProfit !== 0 && (
+              <Button
+                variant="outline"
+                className="text-gray-500 text-lg hover:text-gray-800"
+                onClick={() => {
+                  setTakeProfit(0);
+                }}
+              >
+                ×
+              </Button>
+            )}
+          </div>
+          <div className="text-xs text-muted-foreground mt-1">
+            Min:{" "}
+            {getWsPriceBounds(
+              orderType,
+              orderType === "BUY"
+                ? Number(currentAssetPrice.ask)
+                : Number(currentAssetPrice.bid),
+            ).tp.min.toFixed(2)}{" "}
+            | Max:{" "}
+            {getWsPriceBounds(
+              orderType,
+              orderType === "BUY"
+                ? Number(currentAssetPrice.ask)
+                : Number(currentAssetPrice.bid),
+            ).tp.max.toFixed(2)}
+          </div>
         </div>
-        <div>
-          <Input
-            type="number"
-            step="0.01"
-            min={
-              orderType && currentAssetPrice
-                ? getPriceBounds(
-                    orderType,
-                    orderType === "BUY"
-                      ? Number(currentAssetPrice.ask)
-                      : Number(currentAssetPrice.bid),
-                  ).tp.min
-                : undefined
-            }
-            max={
-              orderType && currentAssetPrice
-                ? getPriceBounds(
-                    orderType,
-                    orderType === "BUY"
-                      ? Number(currentAssetPrice.ask)
-                      : Number(currentAssetPrice.bid),
-                  ).tp.max
-                : undefined
-            }
-            value={takeProfit}
-            onChange={(e) => setTakeProfit(Number(e.target.value))}
-            className=" placeholder:text-[#5a6175]"
-          />
+      )}
+
+      {orderType && currentAssetPrice && (
+        <div className="mb-5">
+          <div className="text-sm font-medium mb-2">StopLoss</div>
+          <div className="flex justify-between gap-2">
+            <Input
+              type="number"
+              step="0.1"
+              value={stopLoss}
+              onChange={(e) => {
+                const price =
+                  orderType === "BUY"
+                    ? Number(currentAssetPrice.ask).toFixed(2)
+                    : Number(currentAssetPrice.bid).toFixed(2);
+                const bounds = getWsPriceBounds(orderType, Number(price));
+                let val = Number(e.target.value);
+                if (val < bounds.sl.min) val = bounds.sl.min;
+                if (val > bounds.sl.max) val = bounds.sl.max;
+                val = Number(val.toFixed(2));
+
+                setStopLoss(val);
+              }}
+              className="placeholder:text-[#5a6175]"
+            />{" "}
+            {stopLoss !== 0 && (
+              <Button
+                variant="outline"
+                className="text-gray-500 text-lg hover:text-gray-800"
+                onClick={() => {
+                  setStopLoss(0);
+                }}
+              >
+                ×
+              </Button>
+            )}
+          </div>
+          <div className="text-xs text-muted-foreground mt-1">
+            Min:{" "}
+            {getWsPriceBounds(
+              orderType,
+              orderType === "BUY"
+                ? Number(currentAssetPrice.ask)
+                : Number(currentAssetPrice.bid),
+            ).sl.min.toFixed(2)}{" "}
+            | Max:{" "}
+            {getWsPriceBounds(
+              orderType,
+              orderType === "BUY"
+                ? Number(currentAssetPrice.ask)
+                : Number(currentAssetPrice.bid),
+            ).sl.max.toFixed(2)}
+          </div>
         </div>
-      </div>
-      <div className="mb-5">
-        <div className="text-[#8b92a7] text-sm font-medium mb-2">StopLoss</div>
-        <div>
-          <Input
-            type="number"
-            step="0.01"
-            min={
-              orderType && currentAssetPrice
-                ? getPriceBounds(
-                    orderType,
-                    orderType === "BUY"
-                      ? Number(currentAssetPrice.ask)
-                      : Number(currentAssetPrice.bid),
-                  ).sl.min
-                : undefined
-            }
-            max={
-              orderType && currentAssetPrice
-                ? getPriceBounds(
-                    orderType,
-                    orderType === "BUY"
-                      ? Number(currentAssetPrice.ask)
-                      : Number(currentAssetPrice.bid),
-                  ).sl.max
-                : undefined
-            }
-            value={stopLoss}
-            onChange={(e) => setStopLoss(Number(e.target.value))}
-            className=" placeholder:text-[#5a6175]"
-          />
-        </div>
-      </div>
+      )}
+
       <div className="flex justify-between text-muted-foreground items-center">
         <div>Margin</div>
         <div className="text-sm">${margin}</div>

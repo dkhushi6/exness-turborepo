@@ -34,7 +34,7 @@ export const handelBuySellOrder = async ({
         type: orderType,
         takeProfit,
         stopLoss,
-      }
+      },
     );
     console.log(res.data.message);
 
@@ -44,7 +44,7 @@ export const handelBuySellOrder = async ({
     console.log("LAST PURCHAE from the user", lastPur);
 
     toast.success(
-      `${lastPur.type} ${lastPur.quantity} lots ${lastPur.asset} at ${lastPur.openPrice} `
+      `${lastPur.type} ${lastPur.quantity} lots ${lastPur.asset} at ${lastPur.openPrice} `,
     );
 
     setOrderType(null);
