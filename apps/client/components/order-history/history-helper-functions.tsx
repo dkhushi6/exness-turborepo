@@ -67,6 +67,17 @@ export function OrdersTable({
     // SELL
     return openPrice - currentPrice;
   };
+  const formatDate = (dateStr?: string) => {
+    if (!dateStr) return "--";
+    const date = new Date(dateStr);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    }); // e.g., "Jan 27, 2026, 10:15 AM"
+  };
 
   if (!orders.length) return <EmptyState label={variant} />;
 
@@ -87,14 +98,12 @@ export function OrdersTable({
               <>
                 <th className="py-3 px-2 text-left">T/P</th>
                 <th className="py-3 px-2 text-left">S/L</th>
-                <th className="py-3 px-2 text-left">Position</th>
                 <th className="py-3 px-2 text-left">P/L USD</th>
               </>
             ) : (
               <>
                 <th className="py-3 px-2 text-left">Open time</th>
                 <th className="py-3 px-2 text-left">Close time</th>
-                <th className="py-3 px-2 text-left">Profit</th>
                 <th className="py-3 px-2 text-left">P/L USD</th>
               </>
             )}
@@ -147,24 +156,11 @@ export function OrdersTable({
                     })()}
                   </td>
                   <td className="py-4 px-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="p-0 h-auto text-blue-400"
-                    >
-                      Add
-                    </Button>
+                    {o.takeProfit ? Number(o.takeProfit) : "--"}
                   </td>
                   <td className="py-4 px-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="p-0 h-auto text-blue-400"
-                    >
-                      Add
-                    </Button>
+                    {o.stopLoss ? Number(o.stopLoss) : "--"}
                   </td>
-                  <td></td>
                   <td
                     className={`py-4 px-2 ${(() => {
                       const pnl = getPnL(o, latestWsArray);
@@ -178,7 +174,6 @@ export function OrdersTable({
                     })()}
                   </td>
 
-                  <td className="py-4 px-2 text-gray-300"> </td>
                   <td
                     className="py-4 px-2 text-2 text-gray-300 hover:text-red-500 hover:scale-105"
                     onClick={() => {
@@ -196,11 +191,13 @@ export function OrdersTable({
                     {Number(o.closePrice).toFixed(4)}
                   </td>
                   <td className="py-4 px-2 text-xs text-gray-400">
-                    {/* {Number(o.openPrice).toFixed(4)} */}
+                    {formatDate(o.createdAt.toString())}
                   </td>
-                  <td className="py-4 px-2 text-xs text-gray-400">jf</td>
+                  <td className="py-4 px-2 text-xs text-gray-400">
+                    {" "}
+                    {formatDate(o.closedAt?.toString())}
+                  </td>
 
-                  <td className="py-4 px-2 text-xs text-gray-400">jf</td>
                   <td
                     className={`py-4 px-2 ${
                       Number(o.pnl) >= 0 ? "text-green-500" : "text-red-500"
