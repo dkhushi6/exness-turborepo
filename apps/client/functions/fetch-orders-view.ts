@@ -36,8 +36,9 @@ export const fetchOrdersView = async ({
           order.type === "SELL"
             ? filteredArray[0].price.bid
             : filteredArray[0].price.ask;
-
+        console.log(`${symbol}'s current price is ${dynamicPrice}`);
         const usedMargin = (dynamicPrice * order.quantity) / order.leverage;
+        console.log(` margin used by ${symbol} is ${usedMargin}`);
         totalLockedMargin += usedMargin;
       }
     } else {

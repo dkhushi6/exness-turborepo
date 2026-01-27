@@ -50,7 +50,7 @@ export async function liquidator(wsData: WSMessage[]) {
     const userBalance = user.usd;
     // Round price to 2 decimals
     const currentPrice = new Decimal(
-      type === "BUY" ? filterData.price.bid : filterData.price.ask
+      type === "BUY" ? filterData.price.bid : filterData.price.ask,
     ).toDecimalPlaces(2, Decimal.ROUND_HALF_UP);
     const positionValue = new Decimal(quantity).mul(currentPrice);
     const requiredMargin = positionValue.div(leverage);
@@ -96,7 +96,7 @@ export async function liquidator(wsData: WSMessage[]) {
           : new Decimal(openPrice).sub(closePrice).toNumber();
 
       const closedAt = new Date();
-
+      //updating order
       try {
         await prisma.order.updateMany({
           where: { id, isClosed: false },
@@ -105,6 +105,19 @@ export async function liquidator(wsData: WSMessage[]) {
         console.log(`Order ${id} closed at ${closePrice}`);
       } catch (err) {
         console.error("error closing order", id, err);
+      }
+      //updating balance
+      try {
+        const positionValue = closePrice * Number(quantity);
+        const margin = new Decimal(positionValue).div(leverage);
+        const newUsd = userBalance.plus(margin);
+
+        await prisma.user.update({
+          where: { id: userId },
+          data: { usd: newUsd },
+        });
+      } catch {
+        console.error("error updating user order");
       }
     } else {
       console.log("order not closed");
