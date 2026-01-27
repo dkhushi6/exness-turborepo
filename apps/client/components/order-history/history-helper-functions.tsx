@@ -58,13 +58,11 @@ export function OrdersTable({
     if (currentPrice === null) return null;
 
     const openPrice = Number(order.openPrice);
-    // const qty = Number(order.quantity);
 
     if (order.type === "BUY") {
       return currentPrice - openPrice;
     }
 
-    // SELL
     return openPrice - currentPrice;
   };
   const formatDate = (dateStr?: string) => {
@@ -76,7 +74,7 @@ export function OrdersTable({
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-    }); // e.g., "Jan 27, 2026, 10:15 AM"
+    });
   };
 
   if (!orders.length) return <EmptyState label={variant} />;

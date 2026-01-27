@@ -55,10 +55,6 @@ function cleanupAndRetry() {
   }, 2000);
 }
 connect();
-// export const setLatestWSMessage = (msg: any) => {
-//   latestWSMessage = msg;
-//   //   console.log("lastestWSMEssage", latestWSMessage);
-// };
 
 export const getLatestWSMessage = () => {
   if (latestWSMessages.length === 0) return null;

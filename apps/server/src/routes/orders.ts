@@ -14,7 +14,6 @@ router.post("/open", async (req, res) => {
   const wsDataArr = getLatestWSMessage();
   const { userId, asset, quantity, leverage, type, takeProfit, stopLoss } =
     req.body;
-
   if (!userId) {
     return res.json({ message: "no userid" });
   }
@@ -35,7 +34,7 @@ router.post("/open", async (req, res) => {
   const assetSymbol = symbolMap[asset as keyof typeof symbolMap];
   console.log("assetSymbol is", assetSymbol);
   const wsDataForAsset = wsDataArr?.find((m) => m.symbol === assetSymbol);
-  console.log("wsdataass", wsDataForAsset);
+  // console.log("wsdataass", wsDataForAsset);
   if (!wsDataForAsset?.price) {
     return res
 
@@ -55,15 +54,28 @@ router.post("/open", async (req, res) => {
       ? Number(wsDataForAsset.price.ask)
       : Number(wsDataForAsset.price.bid);
   console.log(wsDataForAsset);
-  const user = await prisma.user.findUnique({
+  const userWithOrders = await prisma.user.findUnique({
     where: { id: userId },
   });
-  if (!user) {
-    return res.status(400).json({
-      message: "User does not exist",
-      userId,
+  if (!userWithOrders) {
+    console.log("no orders with user");
+    return;
+  }
+  const { usd } = userWithOrders;
+
+  const positionValue = assetPrice * quantity;
+  const margin = new Decimal(positionValue).div(leverage);
+  console.log("margin", margin);
+  console.log("usd", usd);
+
+  if (usd.lessThan(margin)) {
+    console.log("Insufficient balance");
+    return res.json({
+      message: "Insufficient balance to purchase trade",
+      status: "insufficient",
     });
   }
+  //open order
   await prisma.order.create({
     data: {
       userId,
@@ -72,26 +84,16 @@ router.post("/open", async (req, res) => {
       quantity,
       leverage,
       openPrice: assetPrice,
-      takeProfit: takeProfit ? new Decimal(takeProfit) : null,
-      stopLoss: stopLoss ? new Decimal(stopLoss) : null,
+      takeProfit:
+        takeProfit !== undefined && takeProfit > 0
+          ? new Decimal(takeProfit)
+          : null,
+      stopLoss:
+        stopLoss !== undefined && stopLoss > 0 ? new Decimal(stopLoss) : null,
     },
   });
-  const userWithOrders = await prisma.user.findUnique({
-    where: { id: userId },
-  });
-  if (!userWithOrders) {
-    console.log("no orders with user");
-    return;
-  }
-  const positionValue = assetPrice * quantity;
-  const margin = new Decimal(positionValue).div(leverage);
-  console.log("Margin", margin);
-  const usd = userWithOrders.usd;
-  console.log("USD", usd);
+  //update tradable amt
 
-  // if (usd < margin) {
-  //   throw new Error("Insufficient margin");
-  // }
   const newUsd = usd.minus(margin);
   console.log("newUsd", newUsd);
   const updatedUser = await prisma.user.update({
@@ -103,7 +105,6 @@ router.post("/open", async (req, res) => {
   });
   console.log("updated usd after opening", updatedUser.usd);
 
-  // console.log("asset price", assetPrice);
   return res.json({ message: "purchase successfull", balance: updatedUser });
 });
 
@@ -132,7 +133,14 @@ router.put("/close", async (req, res) => {
   const { asset } = order;
   const assetSymbol = symbolMap[asset as keyof typeof symbolMap];
   const wsDataForAsset = wsDataArr?.find((m) => m.symbol === assetSymbol);
-
+  const userWithOrders = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+  if (!userWithOrders) {
+    console.log("no orders with user");
+    return;
+  }
+  const { usd } = userWithOrders;
   if (!wsDataForAsset?.price) {
     return res
       .status(503)
@@ -168,14 +176,16 @@ router.put("/close", async (req, res) => {
   const { quantity, leverage } = order;
   const positionValue = closePrice * Number(quantity);
   const margin = new Decimal(positionValue).div(leverage);
+  const newUsd = usd.plus(margin);
+
   const updatedUser = await prisma.user.update({
     where: { id: userId },
-    data: { usd: { increment: margin } },
+    data: { usd: newUsd },
   });
   console.log("updated usd after closing", updatedUser.usd);
   console.log("updated table", updatedOrder);
   return res.json({
-    message: "order deleted successfull",
+    message: "order closed successfull",
     updatedOrder,
   });
 });

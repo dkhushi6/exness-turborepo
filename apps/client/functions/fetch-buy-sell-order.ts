@@ -36,18 +36,19 @@ export const handelBuySellOrder = async ({
         stopLoss,
       },
     );
-    console.log(res.data.message);
+    if (res.data.status === "insufficient") {
+      toast.success("Insufficient balance to purchase trade");
+      return;
+    } else {
+      const purList = res.data.balance.balance;
+      const lastPur = purList[purList.length - 1];
 
-    console.log("balance is", res.data.balance);
-    const purList = res.data.balance.balance;
-    const lastPur = purList[purList.length - 1];
-    console.log("LAST PURCHAE from the user", lastPur);
+      toast.success(
+        `${lastPur.type} ${lastPur.quantity} lots ${lastPur.asset} at ${lastPur.openPrice} `,
+      );
 
-    toast.success(
-      `${lastPur.type} ${lastPur.quantity} lots ${lastPur.asset} at ${lastPur.openPrice} `,
-    );
-
-    setOrderType(null);
+      setOrderType(null);
+    }
   } catch {
     toast.error("failed to buy/sell");
   }

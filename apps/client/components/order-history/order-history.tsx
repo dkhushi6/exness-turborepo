@@ -22,7 +22,6 @@ export default function OrderHistory({
   const { data: session } = useSession();
   const ordersOpen = orders.filter((o) => !o.isClosed);
   const ordersClosed = orders.filter((o) => o.isClosed);
-
   const closeOrder = async (orderId: string) => {
     if (!session) {
       console.log("  no session in closeorder");
@@ -35,8 +34,8 @@ export default function OrderHistory({
           orderId,
         },
       );
-      console.log("updatedOrder", res.data);
-      console.log("orderid is ", orderId);
+      // console.log("updatedOrder", res.data);
+      // console.log("orderid is ", orderId);
       toast.success(res.data.message);
       console.log(res.data.message);
       setOrders((prev) => prev.filter((o) => o.id !== orderId));
@@ -81,7 +80,7 @@ export default function OrderHistory({
           >
             Closed
             <Badge className="ml-2 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-gray-200">
-              {closeOrder.length}
+              {ordersClosed.length}
             </Badge>
           </TabsTrigger>
         </TabsList>
