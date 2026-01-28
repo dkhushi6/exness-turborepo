@@ -47,8 +47,8 @@ export function OrdersTable({
     console.log("wsdata", wsData);
 
     return order.type === "BUY"
-      ? Number(wsData.price.ask)
-      : Number(wsData.price.bid);
+      ? Number(wsData.price.bid)
+      : Number(wsData.price.ask);
   };
   const getPnL = (
     order: order,
@@ -58,13 +58,17 @@ export function OrdersTable({
     if (currentPrice === null) return null;
 
     const openPrice = Number(order.openPrice);
+    const qty = Number(order.quantity);
+    let priceDiff =
+      order.type === "BUY"
+        ? currentPrice - openPrice
+        : openPrice - currentPrice;
 
-    if (order.type === "BUY") {
-      return currentPrice - openPrice;
-    }
+    const pnl = priceDiff * qty;
 
-    return openPrice - currentPrice;
+    return pnl;
   };
+
   const formatDate = (dateStr?: string) => {
     if (!dateStr) return "--";
     const date = new Date(dateStr);
@@ -168,7 +172,7 @@ export function OrdersTable({
                   >
                     {(() => {
                       const pnl = getPnL(o, latestWsArray);
-                      return pnl !== null ? pnl.toFixed(2) : "--";
+                      return pnl !== null ? pnl.toFixed(4) : "--";
                     })()}
                   </td>
 
@@ -201,7 +205,7 @@ export function OrdersTable({
                       Number(o.pnl) >= 0 ? "text-green-500" : "text-red-500"
                     }`}
                   >
-                    ${Number(o.pnl).toFixed(2)}
+                    ${Number(o.pnl).toFixed(4)}
                   </td>
                 </>
               )}

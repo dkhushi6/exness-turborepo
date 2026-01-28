@@ -48,11 +48,10 @@ function cleanupAndRetry() {
   ws = null;
 
   if (reconnectTimer) return;
-  //send req after 2sec
   reconnectTimer = setTimeout(() => {
     reconnectTimer = null;
     connect();
-  }, 2000);
+  }, 500);
 }
 connect();
 

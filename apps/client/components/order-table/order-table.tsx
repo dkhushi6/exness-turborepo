@@ -65,6 +65,17 @@ const OrderTable = ({ selectedSymbol, latestWsArray }: OrderTableType) => {
 
     calculateMargin();
   }, [currentAssetPrice, orderType, leverage, lot]);
+  useEffect(() => {
+    setOrderType(null);
+    setLot(0);
+    setLeverage(1);
+    setMargin(0);
+    setTakeProfit(0);
+    setStopLoss(0);
+    setCurrentAssetPrice(null);
+
+    setFullSymbol(symbolMap[selectedSymbol]);
+  }, [selectedSymbol]);
 
   useEffect(() => {
     const sym = symbolMap[selectedSymbol];

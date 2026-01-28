@@ -160,9 +160,14 @@ router.put("/close", async (req, res) => {
       : Number(wsDataForAsset.price.ask);
   const pnl =
     order.type === "BUY"
-      ? new Decimal(closePrice).sub(order.openPrice).toNumber()
-      : new Decimal(order.openPrice).sub(closePrice).toNumber();
-
+      ? new Decimal(closePrice)
+          .sub(order.openPrice)
+          .mul(order.quantity)
+          .toNumber()
+      : new Decimal(order.openPrice)
+          .sub(closePrice)
+          .mul(order.quantity)
+          .toNumber();
   const closedAt = new Date();
   const updatedOrder = await prisma.order.updateMany({
     where: { id: orderId, userId },
