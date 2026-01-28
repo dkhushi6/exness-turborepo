@@ -41,10 +41,8 @@ export function OrdersTable({
   ): number | null => {
     const fullSymbol = symbolMap[order.asset as keyof typeof symbolMap];
     const wsData = latestWsArray.find((ws) => ws.symbol === fullSymbol);
-    console.log("wsdata", wsData);
 
     if (!wsData || !wsData.price) return null;
-    console.log("wsdata", wsData);
 
     return order.type === "BUY"
       ? Number(wsData.price.bid)

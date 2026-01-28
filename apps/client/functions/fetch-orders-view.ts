@@ -33,12 +33,12 @@ export const fetchOrdersView = async ({
           console.log("symbol in the db dont match the latestWsArray symbol");
         }
         const dynamicPrice =
-          order.type === "SELL"
+          order.type === "BUY"
             ? filteredArray[0].price.bid
             : filteredArray[0].price.ask;
-        console.log(`${symbol}'s current price is ${dynamicPrice}`);
+        // console.log(`${symbol}'s current price is ${dynamicPrice}`);
         const usedMargin = (dynamicPrice * order.quantity) / order.leverage;
-        console.log(` margin used by ${symbol} is ${usedMargin}`);
+        // console.log(` margin used by ${symbol} is ${usedMargin}`);
         totalLockedMargin += usedMargin;
       }
     } else {

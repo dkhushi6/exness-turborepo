@@ -48,18 +48,16 @@ export async function liquidator(wsData: WSMessage[]) {
       continue;
     }
     const userBalance = user.usd;
-    // Round price to 2 decimals
     const currentPrice = new Decimal(
       type === "BUY" ? filterData.price.bid : filterData.price.ask,
-    ).toDecimalPlaces(2, Decimal.ROUND_HALF_UP);
-    const positionValue = new Decimal(quantity).mul(currentPrice);
-    const requiredMargin = positionValue.div(leverage);
+    ).toDecimalPlaces(3, Decimal.ROUND_HALF_UP);
 
-    // Margin liquidation
-    if (userBalance.lt(requiredMargin)) {
-      closePrice = currentPrice;
-      reason = "Margin Liquidation";
-    }
+    const pnl =
+      type === "BUY"
+        ? closePrice.sub(openPrice).mul(quantity).toNumber()
+        : openPrice.sub(closePrice).mul(quantity).toNumber();
+
+    const tradeAmount = Number(order.quantity) * Number(order.openPrice);
 
     // Take Profit
     if (
@@ -80,21 +78,12 @@ export async function liquidator(wsData: WSMessage[]) {
       reason = "Stop Loss";
     }
     // Hard liquidation to prevent negative balance
-    const unrealizedPnl =
-      type === "BUY"
-        ? currentPrice.sub(openPrice).mul(quantity)
-        : openPrice.sub(currentPrice).mul(quantity);
 
-    if (userBalance.plus(unrealizedPnl).lt(0)) {
+    if (Math.abs(pnl) > tradeAmount) {
       closePrice = currentPrice;
-      reason = "Hard Liquidation: prevent negative balance";
+      reason = "invalid pnl";
     }
     if (closePrice !== null) {
-      const pnl =
-        type === "BUY"
-          ? new Decimal(closePrice).sub(openPrice).toNumber()
-          : new Decimal(openPrice).sub(closePrice).toNumber();
-
       const closedAt = new Date();
       //updating order
       try {

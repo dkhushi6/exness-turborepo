@@ -11,7 +11,6 @@ type fetchWsDataProps = {
 };
 const url = process.env.NEXT_PUBLIC_WS_URL_PORT;
 
-console.log("NEXT_PUBLIC_WS_URL_PORT", url);
 export const fetchWsData = ({
   setDynamicWsData,
   setLatestWsArray,
