@@ -178,10 +178,9 @@ router.put("/close", async (req, res) => {
       pnl,
     },
   });
-  const { quantity, leverage } = order;
-  const positionValue = closePrice * Number(quantity);
-  const margin = new Decimal(positionValue).div(leverage);
-  const newUsd = usd.plus(margin);
+  const { quantity, leverage, openPrice } = order;
+  const originalMargin = new Decimal(openPrice).mul(quantity).div(leverage);
+  const newUsd = usd.plus(originalMargin).plus(new Decimal(pnl));
 
   const updatedUser = await prisma.user.update({
     where: { id: userId },
