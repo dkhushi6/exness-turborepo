@@ -54,8 +54,8 @@ export async function liquidator(wsData: WSMessage[]) {
 
     const pnl =
       type === "BUY"
-        ? closePrice.sub(openPrice).mul(quantity).toNumber()
-        : openPrice.sub(closePrice).mul(quantity).toNumber();
+        ? currentPrice.sub(openPrice).mul(quantity).toNumber()
+        : openPrice.sub(currentPrice).mul(quantity).toNumber();
 
     const tradeAmount = Number(order.quantity) * Number(order.openPrice);
 
@@ -97,8 +97,8 @@ export async function liquidator(wsData: WSMessage[]) {
       }
       //updating balance
       try {
-        const positionValue = closePrice * Number(quantity);
-        const margin = new Decimal(positionValue).div(leverage);
+        const positionValue = closePrice.mul(quantity);
+        const margin = positionValue.div(leverage);
         const newUsd = userBalance.plus(margin);
 
         await prisma.user.update({
