@@ -11,6 +11,7 @@ import {
 } from "../../components/ui/hover-card";
 import { symbolIcons, SymbolInfoType, SymbolType } from "../../lib/types";
 import ThemeSwitcher from "../theme/theme-switcher";
+import Logo from "../../components/ui/logo";
 
 type NavbarPropsType = {
   symbolInfo: SymbolInfoType;
@@ -44,8 +45,8 @@ const Navbar = ({
        
       "
     >
-      <div className="text-primary text-4xl font-semibold tracking-tight z-20">
-        exness
+      <div className="z-20">
+        <Logo size="md" />
       </div>
 
       {/* Only show symbols & balance if session exists */}

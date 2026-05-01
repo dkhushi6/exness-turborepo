@@ -3,12 +3,16 @@ import { Button } from "../../../components/ui/button";
 import React from "react";
 // import gg from "@/public/google.png";
 import { signIn } from "next-auth/react";
+import Logo from "../../../components/ui/logo";
 
 const page = () => {
   return (
     <div className=" flex justify-center items-center h-screen ">
       <div className=" border rounded-lg flex px-5 py-8">
         <div className="text-center">
+          <div className="flex justify-center mb-4">
+            <Logo size="lg" />
+          </div>
           <div className="text-xl font-semibold">Welcome</div>
           <div className="text-[#7a7a7a] text-[13px]">
             Login with your Google account

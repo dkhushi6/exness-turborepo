@@ -1,11 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <text
-    x="16"
-    y="23"
-    font-family="Arial Black, Arial, sans-serif"
-    font-size="24"
-    font-weight="600"
-    fill="#E78A53"
-    text-anchor="middle"
-  >e</text>
+  <!-- Bowl arc — heavy stroke (serif-like weight) -->
+  <path d="M 22 13 A 8 8 0 1 0 22 20"
+        stroke="#E78A53" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <!-- Crossbar — medium stroke (geometric weight) -->
+  <line x1="7" y1="16.5" x2="22" y2="16.5"
+        stroke="#E78A53" stroke-width="2" stroke-linecap="round"/>
+  <!-- Rising accent — thin stroke (the element) -->
+  <line x1="22" y1="13" x2="27" y2="7.5"
+        stroke="#E78A53" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Dot terminal at accent end -->
+  <circle cx="27" cy="7.5" r="1.8" fill="#E78A53"/>
 </svg>
